@@ -9,7 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Rectangle = iTextSharp.text.Rectangle;
 
 namespace StampaCodiciFiscali
 {
@@ -23,9 +25,6 @@ namespace StampaCodiciFiscali
 		
 		private void buttonAggiungiCodiceFiscale_Click(object sender, EventArgs e)
 		{
-			if(codiciFiscali.Count > 15)
-				MessageBox.Show(this, "Pagina completa, procedere con la stampa", "Attenzione!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
 			if (CheckCarattereControllo(textBoxCodiceFiscale.Text))
 			{
 				if(!CheckPresenzaCodiceFiscale(textBoxCodiceFiscale.Text))
@@ -37,6 +36,9 @@ namespace StampaCodiciFiscali
 			}
 			else
 				MessageBox.Show(this, "Codice di controllo non valido", "Attenzione!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+			labelCodiciFiscali.Text = "Codici fiscali : " + codiciFiscali?.Count.ToString();
+			labelPagine.Text = "Pagine : " + pagine.Count;
 		}
 
 		private List<string> codiciFiscali
@@ -45,6 +47,18 @@ namespace StampaCodiciFiscali
 			{
 				var list = new List<string>();
 				foreach (ListViewItem cf in listCodiciFiscali.Items) { list.Add(cf.Text); }
+				return list;
+			}
+		}
+
+
+		public List<List<string>> pagine
+		{
+			get
+			{
+				var list = new List<List<string>>();
+				for (int i = 0; i < codiciFiscali.Count; i += 16)
+					list.Add(codiciFiscali.GetRange(i, Math.Min(16, codiciFiscali.Count - i)));
 				return list;
 			}
 		}
@@ -91,13 +105,23 @@ namespace StampaCodiciFiscali
 		{
 			FindAndKillProcess("Acrobat");
 			FindAndKillProcess("AcroRd32");
+
 			PdfReader pdfReader = new PdfReader(@"vuota.pdf");
+			Rectangle size = pdfReader.GetPageSize(1);
 			using (PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileStream(@"barcode.pdf", FileMode.Create)))
 			{
-				PdfContentByte cb = pdfStamper.GetUnderContent(1);
-				foreach (var cf in codiciFiscali)
-					cb.AddImage(creaCodiceBarre(cb, cf, codiciFiscali.IndexOf(cf)));
+				foreach (var p in pagine.Select((obj, i) => new { Index = i, Lista = obj }))
+				{
+					var indice = p.Index;
+					var pagina = p.Lista;
 
+					if(indice > 0)
+						pdfStamper.InsertPage(indice + 1, size);
+
+					PdfContentByte cb = pdfStamper.GetUnderContent(indice + 1);
+					foreach (var cf in pagina)
+						cb.AddImage(creaCodiceBarre(cb, cf, pagina.IndexOf(cf)));
+				}
 				pdfStamper.Close();
 			}
 
