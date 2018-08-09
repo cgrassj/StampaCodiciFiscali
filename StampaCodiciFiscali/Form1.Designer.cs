@@ -39,6 +39,8 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.labelCodiciFiscali = new System.Windows.Forms.Label();
 			this.labelPagine = new System.Windows.Forms.Label();
+			this.buttonCarica = new System.Windows.Forms.Button();
+			this.buttonSalva = new System.Windows.Forms.Button();
 			this.panelLaterale.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -132,7 +134,7 @@
 			this.buttonStampa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonStampa.Font = new System.Drawing.Font("Arial", 10F);
 			this.buttonStampa.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.buttonStampa.Location = new System.Drawing.Point(458, 102);
+			this.buttonStampa.Location = new System.Drawing.Point(456, 102);
 			this.buttonStampa.Name = "buttonStampa";
 			this.buttonStampa.Size = new System.Drawing.Size(84, 36);
 			this.buttonStampa.TabIndex = 145;
@@ -146,7 +148,7 @@
 			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.button1.Font = new System.Drawing.Font("Arial", 10F);
 			this.button1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.button1.Location = new System.Drawing.Point(369, 102);
+			this.button1.Location = new System.Drawing.Point(371, 102);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(83, 36);
 			this.button1.TabIndex = 146;
@@ -174,6 +176,34 @@
 			this.labelPagine.TabIndex = 137;
 			this.labelPagine.Text = "Pagine : 1";
 			// 
+			// buttonCarica
+			// 
+			this.buttonCarica.BackColor = System.Drawing.Color.White;
+			this.buttonCarica.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonCarica.Font = new System.Drawing.Font("Arial", 10F);
+			this.buttonCarica.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.buttonCarica.Location = new System.Drawing.Point(199, 102);
+			this.buttonCarica.Name = "buttonCarica";
+			this.buttonCarica.Size = new System.Drawing.Size(84, 36);
+			this.buttonCarica.TabIndex = 147;
+			this.buttonCarica.Text = "CARICA";
+			this.buttonCarica.UseVisualStyleBackColor = false;
+			this.buttonCarica.Click += new System.EventHandler(this.buttonCarica_Click);
+			// 
+			// buttonSalva
+			// 
+			this.buttonSalva.BackColor = System.Drawing.Color.White;
+			this.buttonSalva.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonSalva.Font = new System.Drawing.Font("Arial", 10F);
+			this.buttonSalva.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.buttonSalva.Location = new System.Drawing.Point(285, 102);
+			this.buttonSalva.Name = "buttonSalva";
+			this.buttonSalva.Size = new System.Drawing.Size(84, 36);
+			this.buttonSalva.TabIndex = 148;
+			this.buttonSalva.Text = "SALVA";
+			this.buttonSalva.UseVisualStyleBackColor = false;
+			this.buttonSalva.Click += new System.EventHandler(this.buttonSalva_Click);
+			// 
 			// FormMain
 			// 
 			this.AcceptButton = this.buttonAggiungiCodiceFiscale;
@@ -181,6 +211,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.LightGray;
 			this.ClientSize = new System.Drawing.Size(549, 614);
+			this.Controls.Add(this.buttonSalva);
+			this.Controls.Add(this.buttonCarica);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.buttonStampa);
 			this.Controls.Add(this.textBoxCodiceFiscale);
@@ -210,6 +242,8 @@
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label labelCodiciFiscali;
 		private System.Windows.Forms.Label labelPagine;
+		private System.Windows.Forms.Button buttonCarica;
+		private System.Windows.Forms.Button buttonSalva;
 	}
 }
 

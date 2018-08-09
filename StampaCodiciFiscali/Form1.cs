@@ -37,6 +37,11 @@ namespace StampaCodiciFiscali
 			else
 				MessageBox.Show(this, "Codice di controllo non valido", "Attenzione!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+			refreshLabel();
+		}
+
+		void refreshLabel()
+		{
 			labelCodiciFiscali.Text = "Codici fiscali : " + codiciFiscali?.Count.ToString();
 			labelPagine.Text = "Pagine : " + pagine.Count;
 		}
@@ -50,7 +55,6 @@ namespace StampaCodiciFiscali
 				return list;
 			}
 		}
-
 
 		public List<List<string>> pagine
 		{
@@ -75,6 +79,9 @@ namespace StampaCodiciFiscali
 		
 		public bool CheckCarattereControllo(string CodiceFiscale)
 		{
+			if (CodiceFiscale.Length != 16)
+				return false;
+
 			const string listaControllo = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			int[] listaPari = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
 			int[] listaDispari = { 1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, 20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23 };
@@ -159,5 +166,41 @@ namespace StampaCodiciFiscali
 		}
 
 		private void button1_Click(object sender, EventArgs e) => listCodiciFiscali.Items.Clear();
+
+		private void buttonCarica_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog file = new OpenFileDialog();
+			if (file.ShowDialog() == DialogResult.OK)
+			{
+				var sr = new StreamReader(file.FileName);
+				string line;
+				while ((line = sr.ReadLine()) != null)
+				{
+					if (CheckCarattereControllo(line))
+						if (!CheckPresenzaCodiceFiscale(line))
+							listCodiciFiscali.Items.Add(line);
+				}
+				sr.Close();
+			}
+
+			refreshLabel();
+		}
+
+		private void buttonSalva_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog file = new SaveFileDialog();
+			file.InitialDirectory = @"C:\";
+			file.CheckPathExists = true;
+			file.Filter = "File di testo (*.txt)|*.txt|Tutti i file (*.*)|*.*";
+			file.FilterIndex = 1;
+			file.RestoreDirectory = true;
+			if (file.ShowDialog() == DialogResult.OK)
+			{
+				var sw = new StreamWriter(file.FileName);
+				foreach (var cf in codiciFiscali)
+					sw.WriteLine(cf);
+				sw.Close();
+			}
+		}
 	}
 }
