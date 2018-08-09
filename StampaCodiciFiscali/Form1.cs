@@ -129,7 +129,7 @@ namespace StampaCodiciFiscali
 			code39ext.Baseline = 12f;
 			code39ext.X =0.83f;
 			iTextSharp.text.Image imageCode39 = code39ext.CreateImageWithBarcode(cb, null, null);
-			var delta = 52 * (n - n % 2);
+			var delta = 53 * (n - n % 2);
 			imageCode39.SetAbsolutePosition((n % 2 == 0) ? 20 : 315, 762-delta);
 			return imageCode39;
 		}
